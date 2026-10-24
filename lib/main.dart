@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'features/auth/cubit/auth_cubit.dart';
+import 'features/auth/cubit/login_cubit.dart';
 import 'features/auth/presentation/login_page.dart';
 import 'features/cart/cubit/cart_cubit.dart';
 
@@ -16,7 +16,7 @@ class MiniShopApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => AuthCubit()),
+        BlocProvider(create: (_) => LoginCubit()),
         BlocProvider(create: (_) => CartCubit()),
       ],
       child: MaterialApp(
