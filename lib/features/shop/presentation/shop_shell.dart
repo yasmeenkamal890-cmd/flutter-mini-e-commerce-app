@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../auth/cubit/auth_cubit.dart';
+import '../../auth/cubit/login_cubit.dart';
 import '../../auth/presentation/login_page.dart';
 import '../../cart/cubit/cart_cubit.dart';
 import '../../cart/presentation/cart_view.dart';
@@ -33,7 +33,7 @@ class _ShopShellState extends State<ShopShell> {
           IconButton(
             tooltip: 'Sign out',
             onPressed: () {
-              context.read<AuthCubit>().reset();
+              context.read<LoginCubit>().reset();
               context.read<CartCubit>().clear();
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (_) => const LoginPage()),

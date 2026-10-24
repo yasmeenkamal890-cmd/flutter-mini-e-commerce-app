@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shop/presentation/shop_shell.dart';
-import '../cubit/auth_cubit.dart';
+import '../cubit/login_cubit.dart';
+import '../cubit/login_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    await context.read<AuthCubit>().login(
+    await context.read<LoginCubit>().login(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -34,10 +35,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocListener<LoginCubit, LoginState>(
       listenWhen: (previous, current) =>
           previous.status != current.status &&
-          current.status == AuthStatus.success,
+          current.status == LoginStatus.success,
       listener: (context, state) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const ShopShell()),
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(24),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 420),
-                child: BlocBuilder<AuthCubit, AuthState>(
+                child: BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) {
                     return Form(
                       key: _formKey,
@@ -114,20 +115,20 @@ class _LoginPageState extends State<LoginPage> {
                                 ? 'Enter your password'
                                 : null,
                           ),
-                          if (state.status == AuthStatus.failure) ...[
+                          if (state.status == LoginStatus.error) ...[
                             const SizedBox(height: 12),
                             Text(state.errorMessage ?? 'Login failed.',
                                 style: const TextStyle(color: Colors.red)),
                           ],
                           const SizedBox(height: 24),
                           FilledButton(
-                            onPressed: state.status == AuthStatus.loading
+                            onPressed: state.status == LoginStatus.loading
                                 ? null
                                 : _submit,
                             style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                             ),
-                            child: state.status == AuthStatus.loading
+                            child: state.status == LoginStatus.loading
                                 ? const SizedBox(
                                     height: 20,
                                     width: 20,
